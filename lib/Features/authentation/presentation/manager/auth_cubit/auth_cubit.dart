@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoply/Features/authentation/data/user_model.dart';
@@ -78,7 +79,7 @@ class AuthCubit extends Cubit<AuthState> {
     UserModel currentUser = UserModel(
         name: userData['username'],
         email: userData['email'],
-        image: userData['imageUrl']);
+        image: userData['imageUrl'] ?? '');
     currentlyLogedInUser = currentUser;
   }
 
@@ -96,5 +97,47 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(ResetPasswordFailed(errMessage: 'some thing went wrong'));
     }
+  }
+
+  Future googlLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    emit(LoginLoading());
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        emit(AuthInitial());
+        return;
+      }
+      final googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+      final user = await FirebaseAuth.instance.signInWithCredential(credential);
+      final favoriteDocument =
+          firebasefirestore.collection('favorites').doc(user.user!.uid);
+      favoriteDocument.get().then((docSnapshot) {
+        if (docSnapshot.exists) {
+          return;
+        } else {
+          favoriteDocument.set({});
+        }
+      });
+
+      firebasefirestore.collection('users').doc(user.user!.uid).set({
+        'email': googleUser.email,
+        'username': googleUser.displayName,
+        'imageUrl': googleUser.photoUrl
+      });
+      prefs.setString('isAuth', user.user!.uid);
+      emit(LoginSuccess());
+    } catch (e) {
+      prefs.setString('isAuth', '');
+      emit(LoginFailure(errorMessage: 'some thing went wrong'));
+    }
+  }
+
+  void logOut() {
+    GoogleSignIn().disconnect();
+    FirebaseAuth.instance.signOut();
   }
 }

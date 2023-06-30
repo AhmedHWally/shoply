@@ -45,6 +45,7 @@ class SearchViewBody extends StatelessWidget {
                 children: [
                   Expanded(
                       child: TextField(
+                    autofocus: true,
                     cursorColor: kPrimaryColor,
                     onChanged: (value) {
                       BlocProvider.of<SearchCubit>(context)

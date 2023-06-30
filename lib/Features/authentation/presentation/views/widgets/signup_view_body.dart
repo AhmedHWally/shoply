@@ -6,7 +6,6 @@ import 'package:shoply/Features/authentation/presentation/manager/auth_cubit/aut
 import 'package:shoply/Features/authentation/presentation/views/pick_userimage_view.dart';
 import '../../../../../constans.dart';
 import 'custom_elevated_button.dart';
-import 'custom_or_row.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
 
 class SignUpViewBody extends StatelessWidget {
@@ -56,8 +55,12 @@ class SignUpViewBody extends StatelessWidget {
                     fit: BoxFit.fill,
                   ),
                 ),
+                SizedBox(
+                  width: width * 0.5,
+                  child: const Divider(color: kPrimaryColor, thickness: 1),
+                ),
                 const SizedBox(
-                  height: 18,
+                  height: 10,
                 ),
                 Form(
                     key: _formSignUpKey,
@@ -122,39 +125,11 @@ class SignUpViewBody extends StatelessWidget {
                   },
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 8,
                 ),
                 SizedBox(
-                  width: width * 0.3,
-                  child: const CustomORRow(),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {},
-                      child: CircleAvatar(
-                        radius: width * 0.05,
-                        backgroundColor: Colors.white,
-                        backgroundImage: const AssetImage(kGoogleLogo),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 32,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: CircleAvatar(
-                          radius: width * 0.05,
-                          backgroundImage: const AssetImage(kFaceBookLogo)),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 8,
+                  width: width * 0.5,
+                  child: const Divider(color: kPrimaryColor, thickness: 1),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

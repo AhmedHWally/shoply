@@ -38,6 +38,8 @@ class LoginViewBody extends StatelessWidget {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.errorMessage)));
             isLoading = false;
+          } else {
+            isLoading = false;
           }
         },
         builder: (context, state) {
@@ -129,32 +131,25 @@ class LoginViewBody extends StatelessWidget {
                   child: const CustomORRow(),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 12,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        BlocProvider.of<AuthCubit>(context).googlLogin();
+                      },
                       child: CircleAvatar(
                         radius: width * 0.05,
                         backgroundColor: Colors.white,
                         backgroundImage: const AssetImage(kGoogleLogo),
                       ),
                     ),
-                    const SizedBox(
-                      width: 32,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: CircleAvatar(
-                          radius: width * 0.05,
-                          backgroundImage: const AssetImage(kFaceBookLogo)),
-                    )
                   ],
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 8,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

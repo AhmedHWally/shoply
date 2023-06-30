@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -84,7 +83,7 @@ class UserViewBody extends StatelessWidget {
                     child: MainAppElevatedButton(
                       title: 'log out',
                       onPressed: () async {
-                        FirebaseAuth.instance.signOut();
+                        BlocProvider.of<AuthCubit>(context).logOut();
                         BlocProvider.of<CartCubit>(context).cartItems.clear();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(

@@ -14,7 +14,8 @@ class UserOrdersViewBody extends StatelessWidget {
         child: BlocConsumer<OrderCubit, OrderState>(
       listener: (context, state) {
         if (state is GetUserOrdersSuccessed) {
-          userOrders = BlocProvider.of<OrderCubit>(context).userOrders;
+          userOrders =
+              BlocProvider.of<OrderCubit>(context).userOrders.reversed.toList();
         }
       },
       builder: (context, state) {
@@ -27,25 +28,47 @@ class UserOrdersViewBody extends StatelessWidget {
         } else if (state is UserOrdersEmpty) {
           return Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.35,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      image: const DecorationImage(
-                        image: AssetImage(kemptyOrderPage),
-                      )),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            size: 26,
+                          )),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                const Text(
-                  'You don\'t have any orders',
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: kPrimaryColor),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.35,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            image: const DecorationImage(
+                              image: AssetImage(kemptyOrderPage),
+                            )),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      const Text(
+                        'You don\'t have any orders',
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -53,14 +76,29 @@ class UserOrdersViewBody extends StatelessWidget {
         } else {
           return Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'My Orders',
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          size: 26,
+                        )),
+                    const Expanded(
+                      child: Text(
+                        'My Orders',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
