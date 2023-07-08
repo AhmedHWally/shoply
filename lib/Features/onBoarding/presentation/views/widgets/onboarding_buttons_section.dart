@@ -33,7 +33,6 @@ class OnBoardingButtonsSection extends StatelessWidget {
                 buttonTitle: 'Get Started',
                 onPressed: () async {
                   precacheImage(const AssetImage(kLoginImage), context);
-
                   precacheImage(const AssetImage(kGoogleLogo), context);
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => const LoginView()));

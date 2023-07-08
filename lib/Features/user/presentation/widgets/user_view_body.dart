@@ -83,7 +83,7 @@ class UserViewBody extends StatelessWidget {
                     child: MainAppElevatedButton(
                       title: 'log out',
                       onPressed: () async {
-                        BlocProvider.of<AuthCubit>(context).logOut();
+                        await BlocProvider.of<AuthCubit>(context).logOut();
                         BlocProvider.of<CartCubit>(context).cartItems.clear();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(

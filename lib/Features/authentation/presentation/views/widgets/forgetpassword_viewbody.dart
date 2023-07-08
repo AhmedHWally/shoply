@@ -64,47 +64,61 @@ class _ForgetPasswordViewBodyState extends State<ForgetPasswordViewBody> {
                 ],
               ),
               Expanded(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Receive an email to\nreset your password.',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                child: Column(
+                  children: [
+                    SizedBox(
+                        height: height * 0.35,
+                        child: Image.asset(
+                          kResetPasswordImage,
+                          fit: BoxFit.fill,
+                        )),
+                    Expanded(
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            const Text(
+                              'Receive an email to\nreset your password.',
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextField(
+                              controller: emailController,
+                              textInputType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.done,
+                              hintText: 'email',
+                              iconShape: Icons.alternate_email_rounded,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            SizedBox(
+                                width: width * 0.5,
+                                height: height * 0.055,
+                                child: ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        backgroundColor: kButtonColor),
+                                    onPressed: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        await BlocProvider.of<AuthCubit>(
+                                                context)
+                                            .resetPassword(
+                                                emailController.text);
+                                      }
+                                    },
+                                    icon: const Icon(Icons.email),
+                                    label: const Text('Reset password')))
+                          ],
+                        ),
                       ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      CustomTextField(
-                        controller: emailController,
-                        textInputType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.done,
-                        hintText: 'email',
-                        iconShape: Icons.alternate_email_rounded,
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      SizedBox(
-                          width: width * 0.5,
-                          height: height * 0.055,
-                          child: ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16)),
-                                  backgroundColor: kButtonColor),
-                              onPressed: () async {
-                                if (formKey.currentState!.validate()) {
-                                  await BlocProvider.of<AuthCubit>(context)
-                                      .resetPassword(emailController.text);
-                                }
-                              },
-                              icon: const Icon(Icons.email),
-                              label: const Text('Reset password')))
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               )
             ],

@@ -116,6 +116,8 @@ class LoginViewBody extends StatelessWidget {
                 ),
                 GestureDetector(
                     onTap: () {
+                      precacheImage(
+                          const AssetImage(kResetPasswordImage), context);
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const ForgetPasswordView()));
                     },
@@ -141,7 +143,7 @@ class LoginViewBody extends StatelessWidget {
                         BlocProvider.of<AuthCubit>(context).googlLogin();
                       },
                       child: CircleAvatar(
-                        radius: width * 0.05,
+                        radius: width < 600 ? width * 0.05 : width * 0.025,
                         backgroundColor: Colors.white,
                         backgroundImage: const AssetImage(kGoogleLogo),
                       ),

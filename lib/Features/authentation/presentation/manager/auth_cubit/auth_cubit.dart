@@ -99,9 +99,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future googlLogin() async {
+  Future<void> googlLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     emit(LoginLoading());
+
     try {
       final googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
@@ -112,22 +113,28 @@ class AuthCubit extends Cubit<AuthState> {
 
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-      final user = await FirebaseAuth.instance.signInWithCredential(credential);
-      final favoriteDocument =
-          firebasefirestore.collection('favorites').doc(user.user!.uid);
-      favoriteDocument.get().then((docSnapshot) {
-        if (docSnapshot.exists) {
-          return;
-        } else {
-          favoriteDocument.set({});
+      UserCredential user =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      try {
+        final favoriteDocument = await firebasefirestore
+            .collection('favorites')
+            .doc(user.user!.uid)
+            .get();
+        if (favoriteDocument.exists == false) {
+          await firebasefirestore
+              .collection('favorites')
+              .doc(user.user!.uid)
+              .set({});
         }
-      });
 
-      firebasefirestore.collection('users').doc(user.user!.uid).set({
-        'email': googleUser.email,
-        'username': googleUser.displayName,
-        'imageUrl': googleUser.photoUrl
-      });
+        firebasefirestore.collection('users').doc(user.user!.uid).set({
+          'email': googleUser.email,
+          'username': googleUser.displayName,
+          'imageUrl': googleUser.photoUrl
+        });
+      } on Exception catch (e) {
+        print(e);
+      }
       prefs.setString('isAuth', user.user!.uid);
       emit(LoginSuccess());
     } catch (e) {
@@ -136,8 +143,8 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void logOut() {
+  Future<void> logOut() async {
     GoogleSignIn().disconnect();
-    FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
   }
 }

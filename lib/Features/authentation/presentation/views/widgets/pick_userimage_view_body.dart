@@ -54,7 +54,7 @@ class PickUserImageViewBody extends StatelessWidget {
                             color: kButtonColor,
                           )
                         : CircleAvatar(
-                            radius: width * 0.25,
+                            radius: width < 600 ? width * 0.25 : width * 0.075,
                             backgroundColor: kButtonColor,
                             backgroundImage:
                                 BlocProvider.of<UserImageCubit>(context)
