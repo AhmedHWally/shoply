@@ -190,7 +190,10 @@ class SearchViewBody extends StatelessWidget {
           ));
         } else {
           return const Center(
-            child: Text('Search now!'),
+            child: Text(
+              'Search now !',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           );
         }
       })
