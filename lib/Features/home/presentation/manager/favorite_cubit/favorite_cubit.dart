@@ -10,7 +10,10 @@ part 'favorite_state.dart';
 class FavoriteCubit extends Cubit<FavoriteState> {
   FavoriteCubit() : super(FavoriteInitial());
 
-  List<Product> favoriteItems = [];
+  List<Product> _favoriteItems = [];
+  set favoriteItems(List<Product> items) {
+    _favoriteItems = items;
+  }
 
   void toggleFavorites(
     String id,
@@ -24,10 +27,10 @@ class FavoriteCubit extends Cubit<FavoriteState> {
         .doc(user)
         .update({id: product.isFavorite});
 
-    if (favoriteItems.contains(product)) {
-      favoriteItems.removeWhere((element) => element.id == product.id);
+    if (_favoriteItems.contains(product)) {
+      _favoriteItems.removeWhere((element) => element.id == product.id);
     } else {
-      favoriteItems.add(product);
+      _favoriteItems.add(product);
     }
     emit(FavoriteSuccess());
   }

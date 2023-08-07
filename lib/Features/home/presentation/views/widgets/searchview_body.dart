@@ -5,7 +5,8 @@ import 'package:shoply/Features/home/presentation/manager/search_cubit/search_cu
 
 import '../../../../../constans.dart';
 import '../../../../../core/widgets/custom_text.dart';
-import '../../../../favorite/presentation/manager/favorite_cubit/favorite_cubit.dart';
+
+import '../../manager/favorite_cubit/favorite_cubit.dart';
 import '../product_details_view.dart';
 
 class SearchViewBody extends StatelessWidget {
@@ -53,13 +54,28 @@ class SearchViewBody extends StatelessWidget {
                     },
                     textInputAction: TextInputAction.search,
                     decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Search',
-                        hintStyle: TextStyle(color: Colors.white)),
+                      border: InputBorder.none,
+                      hintText: 'Search',
+                      hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          shadows: [
+                            Shadow(
+                                color: kPrimaryColor,
+                                blurRadius: 1,
+                                offset: Offset(1, 1))
+                          ]),
+                    ),
                   )),
                   const Icon(
                     Icons.search,
                     color: Colors.white,
+                    shadows: [
+                      Shadow(
+                          color: kPrimaryColor,
+                          blurRadius: 1,
+                          offset: Offset(1, 1))
+                    ],
                   )
                 ],
               ),
@@ -160,7 +176,7 @@ class SearchViewBody extends StatelessWidget {
                                                       .searchedList[index]
                                                       .isFavorite ==
                                                   true
-                                              ? Colors.pink
+                                              ? kPrimaryColor
                                               : Colors.white,
                                       shadows: const [
                                         Shadow(
@@ -192,7 +208,16 @@ class SearchViewBody extends StatelessWidget {
           return const Center(
             child: Text(
               'Search now !',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: kPrimaryColor,
+                  shadows: [
+                    Shadow(
+                        color: Colors.black,
+                        blurRadius: 1,
+                        offset: Offset(1, 1))
+                  ]),
             ),
           );
         }

@@ -10,5 +10,5 @@ const kemptyOrderPage = 'assets/images/emptyOrderPage.png';
 const kResetPasswordImage = 'assets/images/resetPassword.png';
 const kPrimaryColor = Colors.purple;
 const kSecondaryColor = Color(0xffBFACE0);
-const kIconCollor = Colors.pink;
+const kIconCollor = Colors.purple;
 const kButtonColor = Color(0xff635985);

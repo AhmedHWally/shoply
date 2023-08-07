@@ -30,14 +30,24 @@ class CustomAppBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 32),
         decoration: BoxDecoration(
             color: kSecondaryColor, borderRadius: BorderRadius.circular(32)),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             Text(
               'Search',
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: Colors.white, fontSize: 16, shadows: [
+                Shadow(
+                    color: kPrimaryColor, blurRadius: 1, offset: Offset(1, 1))
+              ]),
             ),
-            Icon(Icons.search, color: Colors.white)
+            Icon(
+              Icons.search,
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                    color: kPrimaryColor, blurRadius: 1, offset: Offset(1, 1))
+              ],
+            )
           ],
         ),
       ),

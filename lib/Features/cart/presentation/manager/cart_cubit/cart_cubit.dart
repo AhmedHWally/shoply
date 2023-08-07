@@ -6,28 +6,29 @@ part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
-  Map<String, CartItem> cartItems = {};
+  Map<String, CartItem> _cartItems = {};
+  Map<String, CartItem> get cartItems => {..._cartItems};
   double total = 0.0;
   void addToCart(String productId, String title, num price, String imageUrl) {
-    if (cartItems.containsKey(productId)) {
+    if (_cartItems.containsKey(productId)) {
       emit(ItemInCart());
       return;
     }
-    cartItems.putIfAbsent(productId,
+    _cartItems.putIfAbsent(productId,
         () => CartItem(title: title, price: price, imageUrl: imageUrl));
     total += price;
     emit(AddToCart());
   }
 
   void emptyCart() {
-    cartItems = {};
+    _cartItems = {};
     total = 0.0;
     emit(RemoveFromCart());
   }
 
   void removeFromCart(String productId) {
-    total -= cartItems[productId]!.price;
-    cartItems.remove(productId);
+    total -= _cartItems[productId]!.price;
+    _cartItems.remove(productId);
     emit(RemoveFromCart());
   }
 
@@ -36,35 +37,35 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void removeSpecificItem(String productId) {
-    total -= cartItems[productId]!.price * cartItems[productId]!.quantity;
-    cartItems.remove(productId);
+    total -= _cartItems[productId]!.price * _cartItems[productId]!.quantity;
+    _cartItems.remove(productId);
     emit(RemoveFromCart());
   }
 
   void increaseQuantityAndPrice(String productId) {
-    cartItems.update(
+    _cartItems.update(
         productId,
         (existingCartItem) => CartItem(
             title: existingCartItem.title,
             price: existingCartItem.price,
             quantity: existingCartItem.quantity + 1,
             imageUrl: existingCartItem.imageUrl));
-    total += cartItems[productId]!.price;
+    total += _cartItems[productId]!.price;
     emit(CartItemUpdate());
   }
 
   void decreaseQuantityAndPrice(String productId) {
-    if (cartItems[productId]!.quantity == 1) {
+    if (_cartItems[productId]!.quantity == 1) {
       emit(RemoveSpecificItemFromCart(productId: productId));
     } else {
-      cartItems.update(
+      _cartItems.update(
           productId,
           (existingCartItem) => CartItem(
               title: existingCartItem.title,
               price: existingCartItem.price,
               quantity: existingCartItem.quantity - 1,
               imageUrl: existingCartItem.imageUrl));
-      total -= cartItems[productId]!.price;
+      total -= _cartItems[productId]!.price;
     }
     emit(CartItemUpdate());
   }

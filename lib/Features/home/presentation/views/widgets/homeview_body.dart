@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoply/Features/home/presentation/manager/products_cubit/products_cubit.dart';
 import 'package:shoply/constans.dart';
 
-import '../../../../favorite/presentation/manager/favorite_cubit/favorite_cubit.dart';
 import '../../../data/models/products_model.dart';
+import '../../manager/favorite_cubit/favorite_cubit.dart';
 import 'categories_listview.dart';
 import 'custom_searchbutton.dart';
-import 'custom_carouselslider.dart';
+import 'offers_carouselslider.dart';
 import 'custom_grid_item.dart';
 
 class HomeViewBody extends StatelessWidget {
@@ -34,7 +34,7 @@ class HomeViewBody extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            const BestProductsSlider(),
+            const OffersSlider(),
             const SizedBox(
               height: 16,
             ),
@@ -55,12 +55,12 @@ class HomeViewBody extends StatelessWidget {
             if (state is ProductsSuccess) {
               return SliverPadding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    EdgeInsets.symmetric(horizontal: width * 0.04, vertical: 8),
                 sliver: SliverGrid.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      mainAxisExtent: height * 0.3,
+                      crossAxisSpacing: 18,
+                      mainAxisSpacing: 18,
+                      mainAxisExtent: height * 0.25,
                       crossAxisCount: 2),
                   itemBuilder: (context, index) => CustomGridItem(
                     item: products[index],
@@ -75,6 +75,28 @@ class HomeViewBody extends StatelessWidget {
                       child: Text(
                 'Some thing went wrong! ${state.errMessage}',
               )));
+            } else if (state is EmptyFavorites) {
+              return SliverToBoxAdapter(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: height * 0.35,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          image: const DecorationImage(
+                              image: AssetImage(kAddToFavoriteImage))),
+                    ),
+                    const Text(
+                      'Add your favorite items now!',
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: kPrimaryColor),
+                    ),
+                  ],
+                ),
+              );
             } else {
               return const SliverToBoxAdapter(
                   child: Center(

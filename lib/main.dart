@@ -4,11 +4,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoply/Features/authentation/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:shoply/Features/authentation/presentation/views/login_view.dart';
 import 'package:shoply/Features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
-import 'package:shoply/Features/favorite/presentation/manager/favorite_cubit/favorite_cubit.dart';
+import 'package:shoply/Features/home/presentation/manager/offers_cubit/offers_cubit.dart';
+
 import 'package:shoply/Features/home/presentation/manager/products_cubit/products_cubit.dart';
 import 'package:shoply/Features/home/presentation/manager/search_cubit/search_cubit.dart';
 import 'package:shoply/Features/home/presentation/views/home_view.dart';
 
+import 'Features/home/presentation/manager/favorite_cubit/favorite_cubit.dart';
 import 'Features/onBoarding/presentation/views/onboarding_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => ProductsCubit()),
+        BlocProvider(create: (context) => OffersCubit()),
         BlocProvider(
           create: (context) => FavoriteCubit(),
         ),
