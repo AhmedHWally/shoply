@@ -134,7 +134,7 @@ class UserOrdersViewBody extends StatelessWidget {
                                               Expanded(child: Text(item.title)),
                                               Expanded(
                                                 child: Text(
-                                                    'price: ${item.price * item.quantity}\$'),
+                                                    'price: ${item.price}\$'),
                                               ),
                                               Text('x ${item.quantity}')
                                             ],

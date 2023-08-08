@@ -6,7 +6,7 @@ import 'package:shoply/Features/home/presentation/manager/search_cubit/search_cu
 import '../../../../../constans.dart';
 import '../../../../../core/widgets/custom_text.dart';
 
-import '../../manager/favorite_cubit/favorite_cubit.dart';
+import '../../../../favorite/presentation/manager/favorite_cubit/favorite_cubit.dart';
 import '../product_details_view.dart';
 
 class SearchViewBody extends StatelessWidget {

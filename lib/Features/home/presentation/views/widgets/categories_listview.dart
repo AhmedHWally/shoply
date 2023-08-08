@@ -22,7 +22,7 @@ class CategoriesListView extends StatelessWidget {
         listener: (context, state) {
       names = BlocProvider.of<ProductsCubit>(context).categories.toList();
     }, builder: (context, state) {
-      if (state is ProductsSuccess || state is EmptyFavorites) {
+      if (state is ProductsSuccess || state is FilterProducts) {
         return SizedBox(
           height: height * 0.05,
           child: Padding(
@@ -33,11 +33,9 @@ class CategoriesListView extends StatelessWidget {
                 child: SizedBox(
                   width: width * 0.275,
                   child: ElevatedButton.icon(
-                    icon: Icon(
-                      names[index] == 'favorites'
-                          ? Icons.favorite
-                          : Icons.shopify_sharp,
-                      shadows: const [
+                    icon: const Icon(
+                      Icons.shopify_sharp,
+                      shadows: [
                         Shadow(
                             color: kPrimaryColor,
                             blurRadius: 1,

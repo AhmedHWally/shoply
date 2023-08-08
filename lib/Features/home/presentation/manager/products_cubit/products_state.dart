@@ -14,4 +14,4 @@ class ProductsFailure extends ProductsState {
 
 class ProductsSuccess extends ProductsState {}
 
-class EmptyFavorites extends ProductsState {}
+class FilterProducts extends ProductsState {}

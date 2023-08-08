@@ -11,24 +11,15 @@ class ProductsCubit extends Cubit<ProductsState> {
   final List<Product> _productsList = [];
   List<Product> _filterdProducts = [];
   List<Product> _favoritesList = [];
-  Set<String> _categories = {'all', 'favorites'};
+  Set<String> _categories = {'all'};
   List<Product> get productsList => [..._productsList];
   List<Product> get favoritesList => [..._favoritesList];
   List<Product> get filterdProducts => [..._filterdProducts];
   Set<String> get categories => {..._categories};
-
   void filterProducts(String category) {
-    if (category == 'favorites') {
-      _filterdProducts = _productsList
-          .where((product) => product.isFavorite == true)
-          .toList()
-          .reversed
-          .toList();
-      if (_filterdProducts.isEmpty) {
-        emit(EmptyFavorites());
-      } else {
-        emit(ProductsSuccess());
-      }
+    if (category == 'all') {
+      _filterdProducts = _productsList;
+      emit(FilterProducts());
     } else if (_productsList
         .where((product) => product.category == category)
         .toList()
@@ -36,37 +27,34 @@ class ProductsCubit extends Cubit<ProductsState> {
       _filterdProducts = _productsList
           .where((product) => product.category == category)
           .toList();
-      emit(ProductsSuccess());
-    } else {
-      _filterdProducts = _productsList;
-      emit(ProductsSuccess());
+      emit(FilterProducts());
     }
   }
 
   Future<void> loadProducts() async {
     String user = FirebaseAuth.instance.currentUser!.uid;
-
     emit(ProductsLoading());
     try {
-      var snapshot =
-          await productsCollection.collection('favorites').doc(user).get();
-      Map<String, dynamic> favoriteItems =
-          snapshot.data() as Map<String, dynamic>;
-
-      productsCollection.collection('products').snapshots().listen((event) {
-        emit(ProductsLoading());
+      productsCollection
+          .collection('products')
+          .snapshots()
+          .listen((event) async {
         _productsList.clear();
-        _categories = {'all', 'favorites'};
+        favoritesList.clear();
+        print('object');
+        _categories = {'all'};
+        var snapshot =
+            await productsCollection.collection('favorites').doc(user).get();
+        Map<String, dynamic> favoriteItems =
+            snapshot.data() as Map<String, dynamic>;
         for (var doc in event.docs) {
           _productsList.add(Product.fromJson(
               doc.data(), favoriteItems[doc.data()['id']] ?? false));
           _categories.add(doc.data()['category']);
         }
-
         _filterdProducts = _productsList;
         _favoritesList =
             _productsList.where((item) => item.isFavorite == true).toList();
-
         emit(ProductsSuccess());
       });
     } on FirebaseException catch (e) {

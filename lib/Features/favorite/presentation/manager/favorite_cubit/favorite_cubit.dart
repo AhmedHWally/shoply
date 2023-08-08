@@ -15,6 +15,8 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     _favoriteItems = items;
   }
 
+  List<Product> get favoriteItems => [..._favoriteItems].reversed.toList();
+
   void toggleFavorites(
     String id,
     Product product,
@@ -32,6 +34,8 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     } else {
       _favoriteItems.add(product);
     }
+    print(_favoriteItems);
+    print(product.title);
     emit(FavoriteSuccess());
   }
 }

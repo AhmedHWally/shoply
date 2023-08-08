@@ -11,6 +11,8 @@ class OrderSuccess extends OrderState {}
 
 class OrderFailed extends OrderState {}
 
+class OrderConfirm extends OrderState {}
+
 class GetUserOrdersStarted extends OrderState {}
 
 class UserOrdersEmpty extends OrderState {}

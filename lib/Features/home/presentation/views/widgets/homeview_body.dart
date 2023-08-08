@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoply/Features/home/presentation/manager/products_cubit/products_cubit.dart';
 import 'package:shoply/constans.dart';
 
+import '../../../../favorite/presentation/manager/favorite_cubit/favorite_cubit.dart';
 import '../../../data/models/products_model.dart';
-import '../../manager/favorite_cubit/favorite_cubit.dart';
+
 import 'categories_listview.dart';
 import 'custom_searchbutton.dart';
 import 'offers_carouselslider.dart';
@@ -50,9 +51,12 @@ class HomeViewBody extends StatelessWidget {
                   BlocProvider.of<ProductsCubit>(context).filterdProducts;
               BlocProvider.of<FavoriteCubit>(context).favoriteItems =
                   BlocProvider.of<ProductsCubit>(context).favoritesList;
+            } else if (state is FilterProducts) {
+              products =
+                  BlocProvider.of<ProductsCubit>(context).filterdProducts;
             }
           }, builder: (context, state) {
-            if (state is ProductsSuccess) {
+            if (state is ProductsSuccess || state is FilterProducts) {
               return SliverPadding(
                 padding:
                     EdgeInsets.symmetric(horizontal: width * 0.04, vertical: 8),
@@ -75,28 +79,6 @@ class HomeViewBody extends StatelessWidget {
                       child: Text(
                 'Some thing went wrong! ${state.errMessage}',
               )));
-            } else if (state is EmptyFavorites) {
-              return SliverToBoxAdapter(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: height * 0.35,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          image: const DecorationImage(
-                              image: AssetImage(kAddToFavoriteImage))),
-                    ),
-                    const Text(
-                      'Add your favorite items now!',
-                      style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: kPrimaryColor),
-                    ),
-                  ],
-                ),
-              );
             } else {
               return const SliverToBoxAdapter(
                   child: Center(

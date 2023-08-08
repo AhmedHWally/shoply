@@ -54,4 +54,8 @@ class OrderCubit extends Cubit<OrderState> {
       emit(GetUserOrdersFailed(errMessage: e.toString()));
     }
   }
+
+  void confirmOrder() {
+    emit(OrderConfirm());
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoply/Features/authentation/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:shoply/Features/cart/presentation/views/cart_view.dart';
+import 'package:shoply/Features/favorite/presentation/views/favorite_products_view.dart';
 import 'package:shoply/Features/home/presentation/views/widgets/homeview_body.dart';
 import 'package:shoply/Features/home/presentation/manager/products_cubit/products_cubit.dart';
 import 'package:shoply/Features/user/presentation/user_view.dart';
@@ -18,7 +19,12 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int index = 0;
-  final screens = [const HomeViewBody(), const CartView(), const UserView()];
+  final screens = [
+    const HomeViewBody(),
+    const FavoriteProductsView(),
+    const CartView(),
+    const UserView()
+  ];
   @override
   void initState() {
     BlocProvider.of<ProductsCubit>(context).loadProducts();
@@ -34,6 +40,11 @@ class _HomeViewState extends State<HomeView> {
     final items = <Widget>[
       Icon(
         Icons.home,
+        color: Colors.white,
+        shadows: [buildShadow()],
+      ),
+      Icon(
+        Icons.favorite,
         color: Colors.white,
         shadows: [buildShadow()],
       ),
@@ -60,6 +71,8 @@ class _HomeViewState extends State<HomeView> {
             bottomNavigationBar: CurvedNavigationBar(
               onTap: (currentIndex) {
                 if (currentIndex == 1) {
+                  precacheImage(const AssetImage(kAddToFavoriteImage), context);
+                } else if (currentIndex == 2) {
                   precacheImage(const AssetImage(kAddToCartImage), context);
                 }
                 setState(() => index = currentIndex);

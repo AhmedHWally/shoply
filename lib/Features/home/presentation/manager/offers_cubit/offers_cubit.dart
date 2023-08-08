@@ -18,7 +18,7 @@ class OffersCubit extends Cubit<OffersState> {
         _offerImagesUrls
             .add((doc.data() as Map<String, dynamic>)['offerImageUrl']);
       }
-      print([..._offerImagesUrls]);
+
       emit(OffersSuccess([..._offerImagesUrls]));
     } on FirebaseException catch (e) {
       emit(OffersFaliure());

@@ -17,6 +17,19 @@ class OrderViewBody extends StatelessWidget {
   static final GlobalKey<FormState> _orderKey = GlobalKey<FormState>();
   String? city, phone, userName;
   bool isLoading = false;
+
+  Future<void> placeOrder(BuildContext ctx) async {
+    _orderKey.currentState!.save();
+    OrderModel orderData = OrderModel(
+        userName: userName!,
+        userAddress: city!,
+        userPhoneNumber: phone!,
+        total: BlocProvider.of<CartCubit>(ctx).total.toStringAsFixed(2),
+        orderItems: orderList,
+        dateOfOrder: DateTime.now());
+    await BlocProvider.of<OrderCubit>(ctx).placeOrder(orderData);
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -42,6 +55,27 @@ class OrderViewBody extends StatelessWidget {
                     ],
                     content: const Text(
                         'Your order is placed .. to check it please go to the user page'),
+                  ));
+        } else if (state is OrderConfirm) {
+          isLoading = false;
+          showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                          },
+                          child: const Text('no')),
+                      TextButton(
+                          onPressed: () async {
+                            Navigator.of(ctx).pop();
+                            await placeOrder(context);
+                          },
+                          child: const Text('yes')),
+                    ],
+                    content: const Text(
+                        'are you sure you want to place the order ?'),
                   ));
         } else if (state is OrderFailed) {
           isLoading = false;
@@ -71,11 +105,11 @@ class OrderViewBody extends StatelessWidget {
           width: width,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
                       'Please fill your information',
                       style:
@@ -171,20 +205,10 @@ class OrderViewBody extends StatelessWidget {
                 height: height * 0.075,
                 child: MainAppElevatedButton(
                     title: 'Place order',
-                    onPressed: () async {
+                    onPressed: () {
                       if (_orderKey.currentState!.validate()) {
                         _orderKey.currentState!.save();
-                        OrderModel orderData = OrderModel(
-                            userName: userName!,
-                            userAddress: city!,
-                            userPhoneNumber: phone!,
-                            total: BlocProvider.of<CartCubit>(context)
-                                .total
-                                .toStringAsFixed(2),
-                            orderItems: orderList,
-                            dateOfOrder: DateTime.now());
-                        await BlocProvider.of<OrderCubit>(context)
-                            .placeOrder(orderData);
+                        BlocProvider.of<OrderCubit>(context).confirmOrder();
                       }
                     }),
               ),

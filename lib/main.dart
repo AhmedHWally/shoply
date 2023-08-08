@@ -10,7 +10,8 @@ import 'package:shoply/Features/home/presentation/manager/products_cubit/product
 import 'package:shoply/Features/home/presentation/manager/search_cubit/search_cubit.dart';
 import 'package:shoply/Features/home/presentation/views/home_view.dart';
 
-import 'Features/home/presentation/manager/favorite_cubit/favorite_cubit.dart';
+import 'Features/favorite/presentation/manager/favorite_cubit/favorite_cubit.dart';
+
 import 'Features/onBoarding/presentation/views/onboarding_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 

@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoply/constans.dart';
 
 import '../../../../../core/widgets/custom_text.dart';
+import '../../../../favorite/presentation/manager/favorite_cubit/favorite_cubit.dart';
 import '../../../data/models/products_model.dart';
-import '../../manager/favorite_cubit/favorite_cubit.dart';
+
 import '../product_details_view.dart';
 
 class CustomGridItem extends StatelessWidget {
