@@ -18,7 +18,7 @@ class ProductsCubit extends Cubit<ProductsState> {
   Set<String> get categories => {..._categories};
   void filterProducts(String category) {
     if (category == 'all') {
-      _filterdProducts = _productsList;
+      _filterdProducts = _productsList.reversed.toList();
       emit(FilterProducts());
     } else if (_productsList
         .where((product) => product.category == category)
@@ -26,7 +26,11 @@ class ProductsCubit extends Cubit<ProductsState> {
         .isNotEmpty) {
       _filterdProducts = _productsList
           .where((product) => product.category == category)
+          .toList()
+          .reversed
           .toList();
+      emit(FilterProducts());
+    } else {
       emit(FilterProducts());
     }
   }
@@ -37,11 +41,12 @@ class ProductsCubit extends Cubit<ProductsState> {
     try {
       productsCollection
           .collection('products')
+          .orderBy('dateOfUpload')
           .snapshots()
           .listen((event) async {
         _productsList.clear();
-        favoritesList.clear();
-        print('object');
+        _favoritesList.clear();
+
         _categories = {'all'};
         var snapshot =
             await productsCollection.collection('favorites').doc(user).get();
@@ -52,7 +57,7 @@ class ProductsCubit extends Cubit<ProductsState> {
               doc.data(), favoriteItems[doc.data()['id']] ?? false));
           _categories.add(doc.data()['category']);
         }
-        _filterdProducts = _productsList;
+        _filterdProducts = _productsList.reversed.toList();
         _favoritesList =
             _productsList.where((item) => item.isFavorite == true).toList();
         emit(ProductsSuccess());

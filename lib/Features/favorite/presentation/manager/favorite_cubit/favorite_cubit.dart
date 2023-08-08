@@ -34,8 +34,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     } else {
       _favoriteItems.add(product);
     }
-    print(_favoriteItems);
-    print(product.title);
+
     emit(FavoriteSuccess());
   }
 }
