@@ -8,6 +8,7 @@ class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
   Map<String, CartItem> _cartItems = {};
   Map<String, CartItem> get cartItems => {..._cartItems};
+  set cartItems(Map<String, CartItem> items) => _cartItems = items;
   double total = 0.0;
   void addToCart(String productId, String title, num price, String imageUrl) {
     if (_cartItems.containsKey(productId)) {

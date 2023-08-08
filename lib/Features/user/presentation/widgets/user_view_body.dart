@@ -84,7 +84,7 @@ class UserViewBody extends StatelessWidget {
                       title: 'log out',
                       onPressed: () async {
                         await BlocProvider.of<AuthCubit>(context).logOut();
-                        BlocProvider.of<CartCubit>(context).cartItems.clear();
+                        BlocProvider.of<CartCubit>(context).cartItems = {};
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                               builder: (context) => const LoginView()),
