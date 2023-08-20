@@ -12,7 +12,7 @@ class SignUpViewBody extends StatelessWidget {
   SignUpViewBody({
     super.key,
   });
-  static final GlobalKey<FormState> _formSignUpKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formSignUpKey = GlobalKey<FormState>();
   String? email, password, username;
   bool isLoading = false;
 

@@ -17,7 +17,7 @@ class LoginViewBody extends StatelessWidget {
   LoginViewBody({
     super.key,
   });
-  static final GlobalKey<FormState> _formLoginKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formLoginKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   String? email, password;

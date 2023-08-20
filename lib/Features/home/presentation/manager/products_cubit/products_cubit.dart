@@ -44,19 +44,19 @@ class ProductsCubit extends Cubit<ProductsState> {
           .orderBy('dateOfUpload')
           .snapshots()
           .listen((event) async {
-        _productsList.clear();
-        _favoritesList.clear();
-
         _categories = {'all'};
+        List<Product> temporaryData = [];
         var snapshot =
             await productsCollection.collection('favorites').doc(user).get();
         Map<String, dynamic> favoriteItems =
             snapshot.data() as Map<String, dynamic>;
         for (var doc in event.docs) {
-          _productsList.add(Product.fromJson(
+          temporaryData.add(Product.fromJson(
               doc.data(), favoriteItems[doc.data()['id']] ?? false));
           _categories.add(doc.data()['category']);
         }
+        _productsList.clear();
+        _productsList.addAll(temporaryData);
         _filterdProducts = _productsList.reversed.toList();
         _favoritesList =
             _productsList.where((item) => item.isFavorite == true).toList();
