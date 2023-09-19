@@ -151,6 +151,7 @@ class OrderViewBody extends StatelessWidget {
                     ),
                     CustomTextField(
                       hintText: 'phone number',
+                      textInputType: TextInputType.number,
                       textInputAction: TextInputAction.done,
                       iconShape: Icons.phone,
                       onSaved: (phoneNumber) {

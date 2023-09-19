@@ -47,7 +47,7 @@ class UserImageCubit extends Cubit<UserImageState> {
             .doc(user)
             .update({'imageUrl': url});
         emit(UserImageSaved());
-      } on Exception catch (e) {
+      } catch (e) {
         print(e.toString());
       }
     }

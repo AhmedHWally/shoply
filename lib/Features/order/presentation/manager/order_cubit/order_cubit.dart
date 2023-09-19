@@ -14,11 +14,14 @@ class OrderCubit extends Cubit<OrderState> {
     final user = FirebaseAuth.instance;
     emit(OrderStart());
     try {
-      await firestore
-          .collection('orders')
-          .doc(user.currentUser!.email)
+      DocumentReference docRef = await firestore
           .collection('userOrders')
-          .add(order.tojson(order));
+          .add(order.tojson(order, user.currentUser!.email!));
+      final String docId = docRef.id;
+      await firestore
+          .collection('userOrders')
+          .doc(docId)
+          .update({'orderId': docId});
       emit(OrderSuccess());
     } catch (e) {
       emit(OrderFailed());
@@ -31,9 +34,8 @@ class OrderCubit extends Cubit<OrderState> {
     try {
       userOrders.clear();
       var snapshot = await firestore
-          .collection('orders')
-          .doc(user.currentUser!.email)
           .collection('userOrders')
+          .where("email", isEqualTo: user.currentUser!.email)
           .orderBy('dateOfOrder')
           .get();
       for (var item in snapshot.docs) {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoply/Features/authentation/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:shoply/Features/authentation/presentation/views/login_view.dart';
 import 'package:shoply/Features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
+import 'package:shoply/Features/home/presentation/manager/language_cubit/language_cubit.dart';
 import 'package:shoply/Features/home/presentation/manager/offers_cubit/offers_cubit.dart';
 
 import 'package:shoply/Features/home/presentation/manager/products_cubit/products_cubit.dart';
@@ -52,16 +54,40 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CartCubit(),
+        ),
+        BlocProvider(
+          create: (context) => LanguageCubit(),
         )
       ],
-      child: MaterialApp(
-        routes: {'login': (context) => const LoginView()},
-        home: showHome as bool
-            ? isAuth == ''
-                ? const LoginView()
-                : const HomeView()
-            : const OnBoardingView(),
+      child: MaterialAppHomePage(
+        showHome: showHome,
+        isAuth: isAuth,
       ),
+    );
+  }
+}
+
+class MaterialAppHomePage extends StatelessWidget {
+  const MaterialAppHomePage({super.key, this.showHome, this.isAuth});
+  final bool? showHome;
+  final String? isAuth;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: BlocProvider.of<LanguageCubit>(context).mainLocale,
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      routes: {'login': (context) => const LoginView()},
+      home: showHome as bool
+          ? isAuth == ''
+              ? const LoginView()
+              : const HomeView()
+          : const OnBoardingView(),
     );
   }
 }
