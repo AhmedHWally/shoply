@@ -33,6 +33,8 @@ class CustomGridItem extends StatelessWidget {
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(color: kPrimaryColor),
                     ),
+                    errorWidget: (context, url, error) =>
+                        const Center(child: Icon(Icons.error)),
                     fit: BoxFit.cover,
                   ),
                 ),
