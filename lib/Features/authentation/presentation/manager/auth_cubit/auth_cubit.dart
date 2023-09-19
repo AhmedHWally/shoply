@@ -73,14 +73,19 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> getUserData() async {
-    String user = FirebaseAuth.instance.currentUser!.uid;
-    var snapshot = await firebasefirestore.collection('users').doc(user).get();
-    Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
-    UserModel currentUser = UserModel(
-        name: userData['username'],
-        email: userData['email'],
-        image: userData['imageUrl'] ?? '');
-    currentlyLogedInUser = currentUser;
+    try {
+      String user = FirebaseAuth.instance.currentUser!.uid;
+      var snapshot =
+          await firebasefirestore.collection('users').doc(user).get();
+      Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+      UserModel currentUser = UserModel(
+          name: userData['username'],
+          email: userData['email'],
+          image: userData['imageUrl'] ?? '');
+      currentlyLogedInUser = currentUser;
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> resetPassword(String email) async {
