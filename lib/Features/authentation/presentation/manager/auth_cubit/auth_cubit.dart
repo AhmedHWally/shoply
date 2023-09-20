@@ -149,7 +149,25 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logOut() async {
-    GoogleSignIn().disconnect();
-    await FirebaseAuth.instance.signOut();
+    final googleSignIn = GoogleSignIn();
+    final firebaseAuth = FirebaseAuth.instance;
+    final user = firebaseAuth.currentUser;
+
+    try {
+      // Sign out from Google Sign-In (if the user signed in with Google)
+      if (user != null &&
+          user.providerData
+              .any((userInfo) => userInfo.providerId == 'google.com')) {
+        await googleSignIn.signOut();
+        print('google account sign out');
+      }
+      // Sign out from Firebase Authentication
+      else {
+        await firebaseAuth.signOut();
+        print('email/password user sign out');
+      }
+    } catch (e) {
+      print("Error signing out: $e");
+    }
   }
 }
