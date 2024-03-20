@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoply/Features/authentation/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:shoply/Features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
+import 'package:shoply/Features/home/presentation/manager/products_cubit/products_cubit.dart';
 import 'package:shoply/Features/order/presentation/manager/order_cubit/order_cubit.dart';
 import 'package:shoply/Features/user/presentation/userOrders_view.dart';
 import 'package:shoply/constans.dart';
@@ -84,6 +85,7 @@ class UserViewBody extends StatelessWidget {
                       title: 'log out',
                       onPressed: () async {
                         BlocProvider.of<AuthCubit>(context).logOut();
+                        BlocProvider.of<ProductsCubit>(context).closeStream();
                         BlocProvider.of<CartCubit>(context).cartItems = {};
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(

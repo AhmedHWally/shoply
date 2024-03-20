@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -9,6 +11,7 @@ class ProductsCubit extends Cubit<ProductsState> {
   ProductsCubit() : super(ProductsInitial());
   final productsCollection = FirebaseFirestore.instance;
   final List<Product> _productsList = [];
+  StreamSubscription<QuerySnapshot>? productSubscription;
   List<Product> _filterdProducts = [];
   List<Product> _favoritesList = [];
   Set<String> _categories = {'all'};
@@ -35,11 +38,15 @@ class ProductsCubit extends Cubit<ProductsState> {
     }
   }
 
+  Future<void> closeStream() async {
+    await productSubscription!.cancel();
+  }
+
   Future<void> loadProducts() async {
     String user = FirebaseAuth.instance.currentUser!.uid;
     emit(ProductsLoading());
     try {
-      productsCollection
+      productSubscription = productsCollection
           .collection('products')
           .orderBy('dateOfUpload')
           .snapshots()
